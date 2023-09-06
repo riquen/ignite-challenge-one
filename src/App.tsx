@@ -4,6 +4,8 @@ import styles from './App.module.css'
 
 import './global.css'
 import { ChangeEvent, FormEvent, InvalidEvent, useState } from "react";
+import { PlusCircle } from "@phosphor-icons/react";
+import { Tasks } from "./components/Tasks";
 
 export function App() {
   const [tasks, setTasks] = useState([''])
@@ -24,8 +26,6 @@ export function App() {
     event.target.setCustomValidity('Esse campo é obrigatório!')
   }
 
-  const isNewTaskEmpty = newTaskText.length === 0
-
   return (
     <div>
       <Header />
@@ -41,10 +41,11 @@ export function App() {
               onInvalid={handleNewTaskInvalid}
               required
             />
-            <button type="submit" disabled={isNewTaskEmpty}>
-              Criar
+            <button type="submit">
+              Criar <PlusCircle size={16} />
             </button>
           </form>
+          <Tasks />
         </main>
       </div>
     </div>

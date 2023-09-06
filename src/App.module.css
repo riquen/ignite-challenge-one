@@ -3,3 +3,44 @@
     margin: 4rem auto;
     padding: 0 1rem;
 }
+
+.taskForm {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: calc(0px - 5.5rem - 6px);
+}
+
+.taskForm input {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--gray-700);
+    background: var(--gray-500);
+}
+
+.taskForm input::placeholder {
+    color: var(--gray-300);
+}
+
+.taskForm input:focus {
+    color: var(--gray-100);
+}
+
+.taskForm button[type=submit] {
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-100);
+    font-size: var(--font-md);
+    font-weight: var(--font-bold);
+    border-radius: 8px;
+    background: var(--blue-dark);
+    border: 0;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+.taskForm button[type=submit]:hover {
+    background: var(--blue);
+}
