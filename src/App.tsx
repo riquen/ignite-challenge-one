@@ -8,7 +8,7 @@ import { PlusCircle } from "@phosphor-icons/react";
 import { Tasks } from "./components/Tasks";
 
 export function App() {
-  const [tasks, setTasks] = useState([''])
+  const [tasks, setTasks] = useState<string[]>([])
   const [newTaskText, setNewTaskText] = useState('')
 
   function handleCreateNewTask(event: FormEvent) {
@@ -24,6 +24,11 @@ export function App() {
 
   function handleNewTaskInvalid(event: InvalidEvent<HTMLInputElement>) {
     event.target.setCustomValidity('Esse campo é obrigatório!')
+  }
+
+  function deleteTask(taskToDelete: string) {
+    const tasksWithoutDeletedOne = tasks.filter((task) => task !== taskToDelete)
+    setTasks(tasksWithoutDeletedOne)
   }
 
   return (
@@ -45,7 +50,10 @@ export function App() {
               Criar <PlusCircle size={16} />
             </button>
           </form>
-          <Tasks />
+          <Tasks
+            tasks={tasks}
+            onDeleteTask={deleteTask}
+          />
         </main>
       </div>
     </div>

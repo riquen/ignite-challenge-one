@@ -24,6 +24,7 @@
 
 .taskForm input:focus {
     color: var(--gray-100);
+    box-shadow: 0 0 0 2px var(--purple-dark);
 }
 
 .taskForm button[type=submit] {
