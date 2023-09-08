@@ -5,15 +5,15 @@ import styles from './App.module.css'
 import './global.css'
 import { ChangeEvent, FormEvent, InvalidEvent, useState } from "react";
 import { PlusCircle } from "@phosphor-icons/react";
-import { Tasks } from "./components/Tasks";
+import { TaskType, Tasks } from "./components/Tasks";
 
 export function App() {
-  const [tasks, setTasks] = useState<string[]>([])
+  const [tasks, setTasks] = useState<TaskType[]>([])
   const [newTaskText, setNewTaskText] = useState('')
 
   function handleCreateNewTask(event: FormEvent) {
     event.preventDefault()
-    setTasks([...tasks, newTaskText])
+    setTasks([...tasks, { isChecked: false, task: newTaskText }])
     setNewTaskText('')
   }
 
@@ -26,8 +26,15 @@ export function App() {
     event.target.setCustomValidity('Esse campo é obrigatório!')
   }
 
+  function handleCheckTask(taskToCheck: string) {
+    const updatedTasks = tasks.map((task) =>
+      task.task === taskToCheck ? { ...task, isChecked: !task.isChecked} : task
+    )
+    setTasks(updatedTasks)
+  }
+
   function deleteTask(taskToDelete: string) {
-    const tasksWithoutDeletedOne = tasks.filter((task) => task !== taskToDelete)
+    const tasksWithoutDeletedOne = tasks.filter(({ task }) => task !== taskToDelete)
     setTasks(tasksWithoutDeletedOne)
   }
 
@@ -52,6 +59,7 @@ export function App() {
           </form>
           <Tasks
             tasks={tasks}
+            onCheckTask={handleCheckTask}
             onDeleteTask={deleteTask}
           />
         </main>

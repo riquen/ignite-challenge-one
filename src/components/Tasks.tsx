@@ -2,37 +2,28 @@ import { Trash } from '@phosphor-icons/react'
 import styles from './Tasks.module.css'
 
 import clipboard from '../assets/clipboard.svg'
-import { useEffect, useState } from 'react'
 
-interface TaskType {
-    id: string
+export interface TaskType {
     isChecked: boolean
     task: string
 }
 
 interface TasksProps {
-    tasks: string[]
+    tasks: TaskType[]
+    onCheckTask: (task: string) => void
     onDeleteTask: (task: string) => void
 }
 
-export function Tasks({ tasks, onDeleteTask }: TasksProps) {
-    const [taskStates, setTaskStates] = useState<TaskType[]>([])
+export function Tasks({ tasks, onCheckTask, onDeleteTask }: TasksProps) {
+    const concludedTasks = tasks.filter(({ isChecked }) => isChecked)
 
-    function handleCheckTask(taskId: string) {
-        const updatedTaskStates = taskStates.map((task) =>
-          task.id === taskId ? { ...task, isChecked: !task.isChecked } : task
-        )
-        setTaskStates(updatedTaskStates)
+    function handleCheckTask(task: string) {
+        onCheckTask(task)
     }
 
     function handleDeleteTask(task: string) {
         onDeleteTask(task)
     }
-
-    useEffect(() => {
-        const updatedTaskStates = tasks.map((task) => ({ id: task, isChecked: false, task }))
-        setTaskStates(updatedTaskStates)
-    }, [tasks])
 
     return (
         <div className={styles.tasksContainer}>
@@ -40,13 +31,13 @@ export function Tasks({ tasks, onDeleteTask }: TasksProps) {
                 <div className={styles.createdTasks}>
                     Tarefas criadas
                     <div className={styles.counter}>
-                        0
+                        {tasks.length}
                     </div>
                 </div>
                 <div className={styles.concludedTasks}>
                     Concluídas
                     <div className={styles.counter}>
-                        0
+                        {concludedTasks.length} de {tasks.length}
                     </div>
                 </div>
             </header>
@@ -59,13 +50,11 @@ export function Tasks({ tasks, onDeleteTask }: TasksProps) {
                     </div>
                 </div>
             ) : (
-                tasks.map((task) => {
-                    const taskState = taskStates.find((t) => t.task === task)
-
+                tasks.map(({ isChecked, task }) => {
                     return (
-                        <div key={task} className={taskState?.isChecked ? styles.taskConcluded : styles.taskContent}>
+                        <div key={task} className={isChecked ? styles.taskConcluded : styles.taskContent}>
                             <div className={styles.checkboxContainer}>
-                                <input type="checkbox" checked={taskState?.isChecked} readOnly />
+                                <input type="checkbox" checked={isChecked} readOnly />
                                 <span className={styles.checkmark} onClick={() => handleCheckTask(task)} />
                             </div>
                             <div className={styles.task}>
